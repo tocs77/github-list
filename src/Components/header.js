@@ -16,6 +16,7 @@ const HeaderContainer = styled.header`
   min-height: 15vh;
   justify-content: space-between;
   align-items: center;
+  margin: 1rem 0rem;
 `;
 
 const Header = () => {

@@ -2,9 +2,7 @@
 
 import axios from './axios-instance';
 
-
-
-export const getRepository = async () => {
-  let response = await axios.get(`/users/tocs77/repos`);
-  return response.data;
+export const getRepository = async (userName) => {
+  let response = await axios.get(`/users/${userName}/repos`);
+  return response;
 };
