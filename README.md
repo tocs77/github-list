@@ -1,1 +1,1 @@
-# github-list
+Github repositories list react application
