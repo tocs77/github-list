@@ -9,19 +9,23 @@ const Wrapper = styled.div`
   max-width: 2rem;
   flex: 1 1 0px;
   text-align: center;
-  a {
+  button {
     color: ${(props) => (props.active ? 'white' : 'black')};
     text-decoration: none;
-    margin: 0.5rem;
+    margin: auto;
+    border: none;
+    background: none;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    display: inline-block;
   }
 `;
 
 const paginator = (props) => {
   return (
     <Wrapper active={props.activePage === props.number}>
-      <a href={props.link + props.number} onClick={props.clicked}>
-        {props.number}
-      </a>
+      <button onClick={props.clicked}>{props.number}</button>
     </Wrapper>
   );
 };

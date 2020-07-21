@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import RepositoryItem from './repository-item';
@@ -13,8 +14,8 @@ const Input = styled.input`
 const Button = styled.button`
   font-size: 1.3rem;
   border: none;
-  background: #404040;
-  color: #ffffff;
+  background: ${(props) => (props.theme === 'light' ? ' #404040' : '#D3D3D3')};
+  color: ${(props) => (props.theme === 'light' ? '#ffffff' : '#202020')};
   padding: 1rem;
   text-transform: uppercase;
   border-radius: 6px;
@@ -25,10 +26,12 @@ const Button = styled.button`
 
 const Message = styled.p`
   font-size: 2rem;
+  color: ${(props) => (props.theme === 'light' ? '#202020' : '#ffffff')};
 `;
 
 const List = styled.ul`
   list-style: none;
+  background: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
 `;
 
 const PaginationWrapper = styled.div`
@@ -126,12 +129,19 @@ class GithubList extends Component {
   }
 
   render() {
+    //Set HTML body background
+    if (this.props.theme === 'light') {
+      document.body.style.backgroundColor = 'white';
+    } else {
+      document.body.style.backgroundColor = 'black';
+    }
+
     let repos = [];
     if (this.state.repoList.lenght !== 0) {
       repos = this.state.repoList.map((repo) => {
         return (
           <li key={repo.id}>
-            <RepositoryItem repo={repo} />{' '}
+            <RepositoryItem repo={repo} theme={this.props.theme} />{' '}
           </li>
         );
       });
@@ -154,29 +164,40 @@ class GithubList extends Component {
         );
       }
     }
-
     return (
       <div>
         <Input
           onChange={(e) => this.inputChangedHandler(e)}
           onKeyPress={(e) => this.inputKeyPressHandler(e)}
         />
-        <Button onClick={this.findByUserHandler.bind(this)}>
+        <Button
+          onClick={this.findByUserHandler.bind(this)}
+          theme={this.props.theme}>
           Find repositories
         </Button>
-        <Button onClick={this.findByLangHandler.bind(this, 'go')}>
+        <Button
+          onClick={this.findByLangHandler.bind(this, 'go')}
+          theme={this.props.theme}>
           Popular Go repositories
         </Button>
-        <Button onClick={this.findByLangHandler.bind(this, 'javascript')}>
+        <Button
+          onClick={this.findByLangHandler.bind(this, 'javascript')}
+          theme={this.props.theme}>
           Popular JavaScript repositories
         </Button>
-        <Message>{this.state.message}</Message>
+        <Message theme={this.props.theme}>{this.state.message}</Message>
         <PaginationWrapper>{pagination}</PaginationWrapper>
-        <List>{repos}</List>
+        <List theme={this.props.theme}>{repos}</List>
         <PaginationWrapper>{pagination}</PaginationWrapper>
       </div>
     );
   }
 }
 
-export default GithubList;
+const mapStateToProps = (state) => {
+  return {
+    theme: state.theme,
+  };
+};
+
+export default connect(mapStateToProps)(GithubList);
